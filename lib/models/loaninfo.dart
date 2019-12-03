@@ -38,7 +38,7 @@ class LoanInfo{
   save() async {
     print(this.toString());
     DatabaseHelper helper = DatabaseHelper.instance;
-    int id = await helper.insert(this);
+    int id = await helper.insertLoan(this);
     print('inserted row: $id');
     print('Saving loan information');
   }
