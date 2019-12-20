@@ -11,11 +11,13 @@ class LoanInfo{
   num tenure = 10;
   num emi = 0;
 
+  static final shortColumns = [DatabaseHelper.loanInfoLoanId, DatabaseHelper.loanInfoLoanName, DatabaseHelper.loanInfoLoanEMI, DatabaseHelper.loanInfoLoanPrincipal];
+
   LoanInfo(){
     this.loanId = 1;
-    this.loanName = 'home loan';
-    this.principal = 1000000;
-    this.interest = 8.5;
+    this.loanName = 'car loan';
+    this.principal = 800000;
+    this.interest = 9.7;
     this.startDate = DateTime.now();
     this.tenure = 10;
     this.emi = calculateEmi(this.principal, this.interest, this.tenure);
@@ -26,6 +28,14 @@ class LoanInfo{
     num t1 = t*12;
     emi = (p * r1 * pow(1+r1, t1)) /(pow(1+r1,t1)-1);
     return emi;
+  }
+
+  String paidPercent(){
+    // TODO get paid percent from loanDetails
+    print(this.toString());
+    num paid = 500000;
+    num paidPer = paid*100/this.principal;
+    return paidPer.toString()+"%";
   }
 
   @override

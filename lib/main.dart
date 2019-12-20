@@ -3,6 +3,7 @@ import 'package:my_loan_book/views/home.dart';
 import 'views/profileForm.dart';
 import 'views/loanForm.dart';
 import 'views/home.dart';
+import 'views/loanList.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
       ),
       //home: MyLoanInfo(),
       //home: MyProfile(),
-      home: MyHome(),
+      //home: MyHome(),
+      home: MyLoanList(),
     );
   }
 }

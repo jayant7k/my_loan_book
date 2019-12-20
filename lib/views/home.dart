@@ -29,10 +29,10 @@ class HomePainter extends CustomPainter{
   @override
   void paint(Canvas canvas, Size size){
     final paint = Paint();
-    paint.color = Colors.deepOrange;
+    paint.color = Colors.green;
 
     var center = Offset(size.width/2, size.height/2);
-    Rect rect = Rect.fromCenter(center: center, width: 10.0, height: 10.0);
+    Rect rect = Rect.fromCenter(center: center, width: size.width/2, height: size.height/4);
     canvas.drawOval(rect, paint);
   }
 
