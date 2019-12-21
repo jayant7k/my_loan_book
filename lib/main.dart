@@ -25,12 +25,12 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         brightness: Brightness.dark,
         accentColor: Colors.greenAccent,
-        primarySwatch: Colors.green
+        primarySwatch: Colors.green,
       ),
       //home: MyLoanInfo(),
       //home: MyProfile(),
-      //home: MyHome(),
-      home: MyLoanList(),
+      home: MyHome(),
+      //home: MyLoanList(),
     );
   }
 }

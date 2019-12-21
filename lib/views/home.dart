@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_loan_book/views/loanForm.dart';
+import 'package:my_loan_book/views/loanList.dart';
+import 'package:my_loan_book/views/profileForm.dart';
 
 class MyHome extends StatefulWidget {
   @override
@@ -21,8 +24,38 @@ class _MyHomeState extends State<MyHome>{
           child: Container(height: 700,),
         ),
       ),
+      bottomNavigationBar: bottomNavBar(context),
     );
   }
+
+  Widget bottomNavBar(BuildContext context) => Container(
+    height: 55,
+    child: BottomAppBar(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          IconButton(
+            icon: Icon(Icons.account_circle),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>MyProfile()));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.add_circle_outline),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>MyLoanInfo()));
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.view_list),
+            onPressed: (){
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyLoanList()));
+            },
+          ),
+        ],
+      ),
+    ),
+  );
 }
 
 class HomePainter extends CustomPainter{

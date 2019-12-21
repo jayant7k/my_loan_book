@@ -122,6 +122,7 @@ class DatabaseHelper{
     //print(maxId);
     loanInfo.loanId = maxId.first["nextId"];
     int id = await db.insert(_loanInfoTable, loanInfo.toMap());
+    loanInfo.calcLoanDetails();
     //await populateLoanDetails(loanInfo);
     return id;
   }

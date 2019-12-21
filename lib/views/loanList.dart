@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:my_loan_book/views/home.dart';
+import 'package:my_loan_book/views/loanForm.dart';
 import '../models/loaninfo.dart';
 import './loanDetails.dart';
+import './profileForm.dart';
 import 'package:my_loan_book/helpers/database.dart';
 
 class MyLoanList extends StatefulWidget{
@@ -10,12 +13,11 @@ class MyLoanList extends StatefulWidget{
   }
 }
 class _MyLoanListState extends State<MyLoanList>{
-  List<LoanInfo> myLoans;
+  //List<LoanInfo> myLoans;
 
   @override
   void initState(){
     super.initState();
-
   }
 
   @override
@@ -23,7 +25,7 @@ class _MyLoanListState extends State<MyLoanList>{
     return Scaffold(
       appBar: topAppBar,
       body: makeBody(context),
-      bottomNavigationBar: bottomAppBar,
+      bottomNavigationBar: bottomAppBar(context),
     );
   }
 
@@ -88,7 +90,7 @@ class _MyLoanListState extends State<MyLoanList>{
     trailing: Icon(Icons.keyboard_arrow_right,size: 30.0,),
     onTap: (){
       Navigator.push(
-        context, MaterialPageRoute(builder: (context)=>LoanDetailPage())
+        context, MaterialPageRoute(builder: (context)=>LoanDetailPage(loanInfo: loanData))
       );
     },
   );
@@ -98,24 +100,32 @@ class _MyLoanListState extends State<MyLoanList>{
     title: Text("My Loans"),
   );
 
-  final bottomAppBar = Container(
+  //final bottomAppBar = Container(
+  Widget bottomAppBar(BuildContext context) => Container(
     height: 55,
     child: BottomAppBar(
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           IconButton(
-            icon: Icon(Icons.home),
-            onPressed: (){},
+            icon: Icon(Icons.account_circle),
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>MyProfile()));
+            },
           ),
           IconButton(
             icon: Icon(Icons.add_circle_outline),
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>MyLoanInfo()));
+            },
           ),
           IconButton(
-            icon: Icon(Icons.account_circle),
-            onPressed: (){},
+            icon: Icon(Icons.home),
+            onPressed: (){
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyHome()));
+            },
           ),
+
         ],
       ),
     ),

@@ -9,6 +9,7 @@ adb -s <device> pull /sdcard/mydatabase.db
 adb -s <device> shell "rm /sdcard/mydatabase.db"
 
 Single line
+cd C:\Users\jayant\AppData\Local\Android\Sdk\platform-tools
 adb -s emulator-5554 shell "run-as com.gamezgeek.my_loan_book cp app_flutter/myLoanBook.db /sdcard/ "
 adb -s emulator-5554 pull /sdcard/myLoanBook.db C:\src\MLB
 

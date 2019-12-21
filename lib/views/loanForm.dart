@@ -118,6 +118,23 @@ class _MyLoanInfoState extends State<MyLoanInfo>{
                         child: MaterialButton(
                           color: Theme.of(context).accentColor,
                           child: Text(
+                            "Recalculate",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          onPressed: () {
+                            //_loanInfo.calcLoanDetails();
+                            print(_loanInfo.toString());
+                            print(_loanFormKey.currentState.toString());
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Expanded(
+                        child: MaterialButton(
+                          color: Theme.of(context).accentColor,
+                          child: Text(
                             "Save",
                             style: TextStyle(color: Colors.white),
                           ),
@@ -131,21 +148,6 @@ class _MyLoanInfoState extends State<MyLoanInfo>{
                               print("validation failed");
                             }
                             print(_loanFormKey.currentState.value['loan_name'].runtimeType);
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      Expanded(
-                        child: MaterialButton(
-                          color: Theme.of(context).accentColor,
-                          child: Text(
-                            "Reset",
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          onPressed: () {
-                            _loanFormKey.currentState.reset();
                           },
                         ),
                       ),
