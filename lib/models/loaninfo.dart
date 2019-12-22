@@ -82,43 +82,20 @@ class LoanInfo{
         "  Cost => "+totalCost.toString()+" LastDate "+lastEMIDate.toString());
   }
 
-  /*
-  num getInterestPaid(){
+ int getTotalInterest(){
+    num totalInterest = this.intPaid+this.intLeft;
+    return totalInterest.toInt();
+ }
 
-  }
+ int getTotalPrinciple() {
+    num totalPrinciple = this.principlePaid + this.principleLeft;
+    return totalPrinciple.toInt();
+ }
 
-  num getPrinciplePaid(){
-
-  }
-
-  num getInterestLeft(){
-
-  }
-
-  num getPrincipleLeft(){
-
-  }
-
-  num getTotalPaid(){
-
-  }
-
-  num getTotalLeft(){
-
-  }
-
-  num getTotalCost(){
-
-  }
-
-  num getMonthsLeft(){
-
-  }
-
-  String getLastEMIDate(){
-
-  }
- */
+ int getTotalCost() {
+    num totalCost = this.totalPaid+this.totalLeft;
+    return totalCost.toInt();
+ }
 
   String paidPercent(){
     // TODO get paid percent from loanDetails
@@ -145,6 +122,9 @@ class LoanInfo{
 
   deleteMe() async {
     print('Deleting '+this.loanName);
+    DatabaseHelper helper = DatabaseHelper.instance;
+    bool done = await helper.deleteLoan(this);
+    print('Deleted '+done.toString());
   }
 
   LoanInfo.fromMap(Map<String, dynamic> map){

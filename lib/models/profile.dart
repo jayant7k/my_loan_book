@@ -5,10 +5,24 @@ class User{
   String myName = 'Name';
   String myEmail = 'Email';
 
+  static final shortColumns = [DatabaseHelper.profileId, DatabaseHelper.profileName, DatabaseHelper.profileEmail];
+
   User(){
-    this.userId = 1;
-    this.myName = 'Name';
-    this.myEmail = 'Email';
+    getUserFromDB();
+  }
+
+  getUserFromDB(){
+    DatabaseHelper helper = DatabaseHelper.instance;
+    Future<User> user = helper.getProfile();
+    user.then((onValue) {
+      this.userId = onValue.userId;
+      this.myName = onValue.myName;
+      this.myEmail = onValue.myEmail;
+    }, onError: (error) {
+      this.userId = 1;
+      this.myName = 'Name';
+      this.myEmail = 'Email';
+    });
   }
 
   @override
@@ -16,8 +30,11 @@ class User{
     return "["+this.userId.toString()+"] : "+this.myName+", "+this.myEmail;
   }
 
-  save (){
+  save () async{
     print ('Saving user profile');
+    DatabaseHelper helper = DatabaseHelper.instance;
+    int id = await helper.insertProfile(this);
+    print('inserted profile: $id');
   }
 
   User.fromMap(Map<String, dynamic> map){

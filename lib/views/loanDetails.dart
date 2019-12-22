@@ -127,10 +127,10 @@ class _LoanDetailPageState extends State<LoanDetailPage>{
     dataMap.putIfAbsent("Principle Left: "+widget.loanInfo.principleLeft.round().toString()+"/-",
             () => widget.loanInfo.principleLeft.toDouble() );
 
-    totalMap.putIfAbsent("Paid till date: "+widget.loanInfo.totalPaid.round().toString()+"/-",
-            () => widget.loanInfo.totalPaid.toDouble());
-    totalMap.putIfAbsent("To be paid: "+widget.loanInfo.totalLeft.round().toString()+"/-",
-            () => widget.loanInfo.totalLeft.toDouble());
+    totalMap.putIfAbsent("Total Interest: "+widget.loanInfo.getTotalInterest().toString()+"/-",
+            () => widget.loanInfo.getTotalInterest().toDouble());
+    totalMap.putIfAbsent("Total principle: "+widget.loanInfo.getTotalPrinciple().toString()+"/-",
+            () => widget.loanInfo.getTotalPrinciple().toDouble());
 
     super.initState();
   }
@@ -196,10 +196,21 @@ class _LoanDetailPageState extends State<LoanDetailPage>{
           child: Text("Delete"),
           onPressed: (){
             widget.loanInfo.deleteMe();
-
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyLoanList()));
           },
-        )
+        ),
+        SizedBox(
+          width: 20,
+        ),
+        RaisedButton(
+          padding: const EdgeInsets.all(8.0),
+          textColor: Colors.white,
+          color: Colors.green,
+          child: Text("Back"),
+          onPressed: (){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyLoanList()));
+          },
+        ),
       ],
     );
 

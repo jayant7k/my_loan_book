@@ -1,30 +1,33 @@
-import 'dart:math';
+//import 'dart:math';
 
 import 'package:my_loan_book/helpers/database.dart';
 import 'package:my_loan_book/models/loaninfo.dart';
 
 class LoanDetails{
-  List<LoanDetail> loanDetails;
-  num closingPrinciple = 0;
-  LoanDetail currLd;
-
-  LoanDetails(LoanInfo loanInfo){
-    loanDetails = new List<LoanDetail>();
-    currLd = new LoanDetail(loanInfo);
-    closingPrinciple = currLd.ldClosingPrinciple;
-    loanDetails.add(currLd);
+  Future<List<LoanInfo>> loanDetails;
+  num totalInterest = 0;
+  num totalPrinciple = 0;
+  num totalCost = 0;
+  
+  LoanDetails(){
+    loanDetails = DatabaseHelper.instance.getAllLoans();
+    calcAllEntries();
   }
 
   calcAllEntries(){
-    while(closingPrinciple > 0 ){
-      LoanDetail nextLd = LoanDetail.fromLoanDetail(currLd);
-      closingPrinciple = nextLd.ldClosingPrinciple;
-      loanDetails.add(currLd);
-      nextLd = currLd;
-    }
-  }
+    loanDetails.then((onValue) {
+      onValue.forEach((loanData) => () {
+        loanData.calcLoanDetails();
+        totalInterest += loanData.getTotalInterest();
+        totalPrinciple += loanData.getTotalPrinciple();
+      });
+    },
+    onError: (error) {
+      print(error);
+    });
 }
 
+/*
 class LoanDetail{
   num ldId;
   DateTime ldDate;
@@ -132,5 +135,6 @@ class LoanDetail{
     };
 
     return map;
-  }
+  }*/
 }
+

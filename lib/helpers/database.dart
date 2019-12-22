@@ -9,7 +9,7 @@ import 'package:path_provider/path_provider.dart';
 
 class DatabaseHelper{
   static final _databaseName = "myLoanBook.db";
-  static final _databaseVersion = 1;
+  static final _databaseVersion = 2;
 
   // profile info table *****************************************
   static final _profileInfoTable = "profile_info";
@@ -31,13 +31,27 @@ class DatabaseHelper{
 
   Future<int> insertProfile(User profile) async {
     Database db = await database;
-    int id = await db.insert(_profileInfoTable, profile.toMap());
+    var maxId = await db.rawQuery("SELECT count(*) Id FROM $_profileInfoTable");
+    int id = maxId.first["Id"];
+    if(id == 0 ) {
+      id = await db.insert(_profileInfoTable, profile.toMap());
+    }
+    else {
+      await db.update(_profileInfoTable, profile.toMap(), where: "$profileId = ?", whereArgs: [id]);
+    }
     return id;
+  }
+
+  Future<User> getProfile() async{
+    Database db = await database;
+    List<Map> result = await db.query(_profileInfoTable, columns: User.shortColumns, orderBy: "id ASC" );
+    return result.isNotEmpty ? User.fromMap(result.first) : Null;
   }
 
   // end profile info table *****************************
 
   // loan details table ******************************
+  /*
   static final _loanDetailTable = "loan_details";
   static final ldId = "loan_id";
   static final ldDate = "loan_date";
@@ -53,6 +67,7 @@ class DatabaseHelper{
   static final ldIntPaid = "loan_interest_paid_total";
   static final ldPrincipalPaid = "loan_principal_paid_total";
   static final ldTotalPaid = "loan_total_paid";
+
 
   Future<int> populateLoanDetails(LoanInfo loanInfo) async{
     print('Populating loan details');
@@ -75,7 +90,7 @@ class DatabaseHelper{
   insertToLoanDetailTable(Database db, LoanDetail ld) async {
     await db.insert(_loanDetailTable, ld.toMap());
   }
-
+*/
   // end loan details table **********************************
 
   // loan info table **********************************
@@ -126,6 +141,15 @@ class DatabaseHelper{
     //await populateLoanDetails(loanInfo);
     return id;
   }
+
+  Future<bool> deleteLoan(LoanInfo loanInfo) async {
+    Database db = await database;
+    await db.delete(_loanInfoTable, where: "$loanInfoLoanId = ?",
+          whereArgs: [loanInfo.loanId]).catchError((e){
+            return false;
+    });
+    return true;
+  }
   
   Future<LoanInfo> getLoanInfoById(num loanId) async{
     Database db = await database;
@@ -174,13 +198,14 @@ class DatabaseHelper{
         CREATE TABLE $_profileInfoTable ( $profileId INTEGER PRIMARY KEY,
         $profileName TEXT NOT NULL, $profileEmail TEXT NOT NULL)
       ''');
-    await db.execute('''
+
+  /*  await db.execute('''
         CREATE TABLE $_loanDetailTable ( $ldId INTEGER NOT NULL, $ldMonth INTEGER NOT NULL, 
         $ldDate TEXT NOT NULL, $ldDisbursement INTEGER NOT NULL, $ldOpenPrinciple REAL NOT NULL,
         $ldInterest REAL NOT NULL, $ldEMI REAL NOT NULL, $ldIntComp REAL NOT NULL, 
         $ldPrincipleComp REAL NOT NULL, $ldClosingPrinciple REAL NOT NULL, $ldPartPmt INTEGER NOT NULL,
         $ldIntPaid REAL NOT NULL, $ldPrincipalPaid REAL NOT NULL, $ldTotalPaid REAL NOT NULL )
-    ''');
+    ''');*/
   }
 
 }
