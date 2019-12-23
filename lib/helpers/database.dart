@@ -31,20 +31,25 @@ class DatabaseHelper{
 
   Future<int> insertProfile(User profile) async {
     Database db = await database;
-    var maxId = await db.rawQuery("SELECT count(*) Id FROM $_profileInfoTable");
+    print(profile.toString());
+    /*var maxId = await db.rawQuery("SELECT count(*) Id FROM $_profileInfoTable");
     int id = maxId.first["Id"];
     if(id == 0 ) {
       id = await db.insert(_profileInfoTable, profile.toMap());
     }
-    else {
-      await db.update(_profileInfoTable, profile.toMap(), where: "$profileId = ?", whereArgs: [id]);
-    }
+    else {*/
+    int id=1;
+    await db.update(_profileInfoTable, profile.toMap(), where: "$profileId = ?",
+        whereArgs: [id]).catchError((e) {
+          return -1;
+        });
+    //}
     return id;
   }
 
   Future<User> getProfile() async{
     Database db = await database;
-    List<Map> result = await db.query(_profileInfoTable, columns: User.shortColumns, orderBy: "id ASC" );
+    List<Map> result = await db.query(_profileInfoTable, columns: User.shortColumns, orderBy: "$profileId ASC" );
     return result.isNotEmpty ? User.fromMap(result.first) : Null;
   }
 
@@ -159,7 +164,7 @@ class DatabaseHelper{
 
   Future<List<LoanInfo>> getAllLoans() async{
     Database db = await database;
-    List<Map> results = await db.query("$_loanInfoTable", columns: LoanInfo.shortColumns, orderBy: "id ASC" );
+    List<Map> results = await db.query("$_loanInfoTable", columns: LoanInfo.shortColumns, orderBy: "$loanInfoLoanId ASC" );
     List<LoanInfo> myLoans = new List();
     results.forEach((result){
       LoanInfo loanInfo = LoanInfo.fromMap(result);
@@ -198,6 +203,9 @@ class DatabaseHelper{
         CREATE TABLE $_profileInfoTable ( $profileId INTEGER PRIMARY KEY,
         $profileName TEXT NOT NULL, $profileEmail TEXT NOT NULL)
       ''');
+    await db.execute('''
+        INSERT INTO $_profileInfoTable VALUES ('1', 'Gamezgeek', 'gamezgeek@gmail.com')
+        ''');
 
   /*  await db.execute('''
         CREATE TABLE $_loanDetailTable ( $ldId INTEGER NOT NULL, $ldMonth INTEGER NOT NULL, 

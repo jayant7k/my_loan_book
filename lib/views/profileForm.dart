@@ -15,6 +15,7 @@ class _MyProfileState extends State<MyProfile>{
 
   @override
   Widget build(BuildContext context){
+    print(_profile.toString());
     return Scaffold(
         appBar: AppBar(title: Text("Profile")),
         body: Container(
@@ -42,6 +43,10 @@ class _MyProfileState extends State<MyProfile>{
                           validators: [
                             FormBuilderValidators.required()
                           ],
+                          /*onChanged: (val) {
+                            print(val);
+                            _profileFormKey.currentState.setAttributeValue("myName", val);
+                          },*/
                         ),
                         FormBuilderTextField(
                           attribute: 'myEmail',
@@ -53,6 +58,9 @@ class _MyProfileState extends State<MyProfile>{
                           validators: [
                             FormBuilderValidators.required()
                           ],
+                          /*onChanged: (val) {
+                            _profile.myEmail = val;
+                          },*/
                         ),
                       ]
                   ),
@@ -67,15 +75,19 @@ class _MyProfileState extends State<MyProfile>{
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          if (_profileFormKey.currentState.validate()) {
+                          var _form = _profileFormKey.currentState;
+                          if (_form.validate()) {
+                            _form.save();
+                            _profile.myName = _form.value['myName'].toString();
+                            _profile.myEmail = _form.value['myEmail'].toString();
+                            //print(_profileFormKey.currentState.value);
+                            //print(_profile.toString());
                             _profile.save();
-                            _profileFormKey.currentState.save();
-                            print(_profileFormKey.currentState.value);
                           } else {
-                            print(_profileFormKey.currentState.value);
+                            print(_form.value);
                             print("validation failed");
                           }
-                          print(_profileFormKey.currentState.value['userId'].runtimeType);
+                          //print(_form.value['userId'].runtimeType);
                         },
                       ),
                     ),

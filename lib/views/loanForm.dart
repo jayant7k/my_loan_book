@@ -14,6 +14,16 @@ class _MyLoanInfoState extends State<MyLoanInfo>{
   final _loanFormKey = GlobalKey<FormBuilderState>();
   final _loanInfo = LoanInfo();
 
+  repaintForm(formState, loanInfo, type, val){
+    if(type == "p"){
+      loanInfo.principal = num.parse(val);
+      num emi = loanInfo.calculateEmi(num.parse(val), loanInfo.interest, loanInfo.tenure);
+      loanInfo.emi = emi;
+      print("New EMI "+emi.toString());
+      formState.setAttributeValue("emi", emi.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -58,6 +68,12 @@ class _MyLoanInfoState extends State<MyLoanInfo>{
                           validators: [
                             FormBuilderValidators.numeric()
                           ],
+                          onChanged: (val){
+                            repaintForm(_loanFormKey.currentState, _loanInfo, "p", val);
+                            _loanFormKey.currentState.setState(() => {
+
+                            });
+                          },
                         ),
                         FormBuilderTextField(
                           attribute: 'interest',
@@ -104,7 +120,8 @@ class _MyLoanInfoState extends State<MyLoanInfo>{
                               labelText: "EMI",
                               icon: const Icon(Icons.account_balance_wallet)
                           ),
-                          keyboardType: TextInputType.number,
+                          //keyboardType: TextInputType.number,
+                          readOnly: true,
                           validators: [
                             FormBuilderValidators.numeric(),
                           ],
@@ -123,6 +140,13 @@ class _MyLoanInfoState extends State<MyLoanInfo>{
                           ),
                           onPressed: () {
                             //_loanInfo.calcLoanDetails();
+                            var _form = _loanFormKey.currentState;
+                            _loanInfo.loanName = _form.value["loan_name"];
+                            _loanInfo.principal = num.parse(_form.value["principal"]);
+                            _loanInfo.interest = num.parse(_form.value["interest"]);
+                            _loanInfo.startDate = _form.value["start_date"];
+                            _loanInfo.tenure = num.parse(_form.value["tenure"]);
+                            _loanInfo.emi = num.parse(_form.value["emi"]);
                             print(_loanInfo.toString());
                             print(_loanFormKey.currentState.toString());
                           },
@@ -139,15 +163,22 @@ class _MyLoanInfoState extends State<MyLoanInfo>{
                             style: TextStyle(color: Colors.white),
                           ),
                           onPressed: () {
-                            if (_loanFormKey.currentState.validate()) {
+                            var _form = _loanFormKey.currentState;
+                            if (_form.validate()) {
+                              _form.save();
+                              print(_form.value);
+                              _loanInfo.loanName = _form.value["loan_name"];
+                              _loanInfo.principal = num.parse(_form.value["principal"]);
+                              _loanInfo.interest = num.parse(_form.value["interest"]);
+                              _loanInfo.startDate = _form.value["start_date"];
+                              _loanInfo.tenure = num.parse(_form.value["tenure"]);
+                              _loanInfo.emi = num.parse(_form.value["emi"]);
                               _loanInfo.save();
-                              _loanFormKey.currentState.save();
-                              print(_loanFormKey.currentState.value);
                             } else {
-                              print(_loanFormKey.currentState.value);
+                              print(_form.value);
                               print("validation failed");
                             }
-                            print(_loanFormKey.currentState.value['loan_name'].runtimeType);
+                            print(_form.value['loan_name'].runtimeType);
                           },
                         ),
                       ),

@@ -34,6 +34,11 @@ class LoanInfo{
     this.tenure = 10;
     this.emi = calculateEmi(this.principal, this.interest, this.tenure);
   }
+
+  /*num calculateEmiStr(var p, var r, var t){
+    this.calculateEmi(num.parse(p), num.parse(r), num.parse(t));
+  }*/
+
   num calculateEmi(num p, num r, num t){
     num emi;
     num r1 = r / (12*100);
@@ -98,16 +103,14 @@ class LoanInfo{
  }
 
   String paidPercent(){
-    // TODO get paid percent from loanDetails
-    print(this.toString());
-    num paid = 500000;
-    num paidPer = paid*100/this.principal;
-    return paidPer.toString()+"%";
+    this.calcLoanDetails();
+    num paidPer = this.principlePaid*100/this.principal;
+    return paidPer.round().toString()+"%";
   }
 
   @override
   String toString(){
-    return "["+this.loanId.toString()+":"+this.loanName+"]"+"Loan amount :"+this.principal.toString()+", interest: "
+    return "["+this.loanId.toString()+":"+this.loanName+"] "+"Loan amount :"+this.principal.toString()+", interest: "
         +this.interest.toString()+"%, tenure:"+this.tenure.toString()+" Yrs, EMI:"
         +this.emi.toStringAsFixed(2)+", Start:"+this.startDate.toString();
   }
